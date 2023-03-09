@@ -15,6 +15,7 @@ html, body{
     --color2: #1AD662;
     --color3: #28ED3C;
     --color-4: #9BF71E;
+    --color5: rgb(54, 170, 48);
     --color-text: black;
 }
 
@@ -86,6 +87,23 @@ button.signin:hover{
     font-style: italic;
 }
 
+button.home{
+    background-color: var(--color3);
+    width: 20vw;
+    border: none;
+    height: 5vh;
+    cursor: pointer;   
+}
+
+button.home1{
+    background-color: var(--color3);
+    width: 20vw;
+    border: none;
+    height: 5vh;
+    cursor: pointer;   
+}
+
+
 /* Login page styles */
 .formulario{
     display: flex;
@@ -94,14 +112,23 @@ button.signin:hover{
     width: 60vw;
     height: auto;
     align-items: center;
+    background: linear-gradient(30deg,#daff33,#1ef7af,#e7ff33);
+    background-size: 400% 400%;
+    position: relative;
+    animation: cambiar 10s ease-in-out infinite;
 }
-
+@keyframes cambiar{
+    0%{background-position: 0 50%;}
+    50%{background-position: 100% 50%;}
+    100%{background-position: 0 50%;}
+}   
 .formulario input{
     width: 80%;
+    height: 30px;
 }
 
 .formulario input[type="submit"]{
-    background-color: var(--color2);
+    background-color: var(--color5);
     width: 30%;
     border: none;
     height: 5vh;
@@ -117,6 +144,10 @@ button.signin:hover{
     border: solid black 2px; 
 }
 
+#genre{
+    width: 80%;
+    height: 30px;
+}
 /* Sign-in page styles */
 /* TBD */
 
@@ -153,8 +184,29 @@ th:nth-of-type(6){
 
 p.login_ok{
     color: green;
+    margin-left: 50px;
 }
 
 p.login_ko{
     color:red;
+    margin-left: 300px;
+}
+p.signin_ok{
+    color: green;
+    margin-left: 50px;
+}
+
+p.signin_ko{
+    color:red;
+    margin-left: 525px;
+}
+
+.home{
+
+    margin-top: 400px;
+    margin-left: 525px;
+}
+.home1{
+
+    margin-top: 400px;
 }

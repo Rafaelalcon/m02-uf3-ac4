@@ -14,9 +14,9 @@ from flask import Flask,render_template,request;
 # connectBD: conecta a la base de datos users en MySQL
 def connectBD():
     db = mysql.connector.connect(
-        host = "localhost",
+        host = "127.0.0.1",
         user = "root",
-        passwd = "claumestra",
+        passwd = "72583269Ra@",
         database = "users"
     )
     return db
@@ -52,14 +52,30 @@ def initBD():
     return
 
 # checkUser: comprueba si el par usuario-contraseña existe en la BD
-def checkUser(user,password):
-    bd=connectBD()
-    cursor=bd.cursor()
+# def checkUser(user,password):
+#     bd=connectBD()
+#     cursor=bd.cursor()
 
-    query=f"SELECT user,name,surname1,surname2,age,genre FROM users WHERE user='{user}'\
-            AND password='{password}'"
-    print(query)
-    cursor.execute(query)
+#     query=f"SELECT user,name,surname1,surname2,age,genre FROM users WHERE user='{user}'\
+#             AND password='{password}'"
+#     print(query)
+#     cursor.execute(query)
+#     userData = cursor.fetchall()
+#     bd.close()
+    
+#     if userData == []:
+#         return False
+#     else:
+#         return userData[0]
+
+def checkUserSecure(user, password):
+    bd = connectBD()
+    cursor = bd.cursor()
+    
+    query="SELECT user, name, surname1, surname2, age, genre FROM users WHERE user=%s \
+        AND password = %s"
+    values = (user, password)
+    cursor.execute(query, values)
     userData = cursor.fetchall()
     bd.close()
     
@@ -67,11 +83,17 @@ def checkUser(user,password):
         return False
     else:
         return userData[0]
-
+    
 # cresteUser: crea un nuevo usuario en la BD
 def createUser(user,password,name,surname1,surname2,age,genre):
-    
-    return
+    bd = connectBD()
+    cursor = bd.cursor()
+    query = "insert into users (user, password, name, surname1, surname2, age, genre) values (%s,%s,%s,%s,%s,%s,%s);"
+    values = (user,password,name,surname1,surname2,age,genre)
+    cursor.execute(query, values)
+    bd.commit()
+    bd.close()
+    return True
 
 # Secuencia principal: configuración de la aplicación web ##########################################
 # Instanciación de la aplicación web Flask
@@ -89,7 +111,7 @@ def login():
 
 @app.route("/signin")
 def signin():
-    return "SIGN IN PAGE"
+    return render_template("signin.html")
 
 @app.route("/results",methods=('GET', 'POST'))
 def results():
@@ -97,13 +119,30 @@ def results():
         formData = request.form
         user=formData['usuario']
         password=formData['contrasena']
-        userData = checkUser(user,password)
+        userData = checkUserSecure(user,password)
 
         if userData == False:
             return render_template("results.html",login=False)
         else:
             return render_template("results.html",login=True,userData=userData)
-        
+
+
+@app.route("/newUser", methods=('GET', 'POST'))
+def newUser():
+    if request.method == ('POST'):
+        formData = request.form
+        user = formData['user']
+        password=formData['contrasena']
+        name=formData['name']
+        surname1 = formData['surname1']
+        surname2 = formData['surname2']
+        age = formData['age']
+        genre = formData['genre']
+        newuser = createUser(user, password, name, surname1, surname2, age, genre)
+        if newuser == False:
+            return render_template("newUser.html",signin=False)
+        else:
+            return render_template("newUser.html",signin=True)
 # Configuración y arranque de la aplicación web
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.run(host='localhost', port=5000, debug=True)
