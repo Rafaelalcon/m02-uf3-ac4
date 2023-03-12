@@ -51,22 +51,6 @@ def initBD():
     bd.close()
     return
 
-# checkUser: comprueba si el par usuario-contraseña existe en la BD
-# def checkUser(user,password):
-#     bd=connectBD()
-#     cursor=bd.cursor()
-
-#     query=f"SELECT user,name,surname1,surname2,age,genre FROM users WHERE user='{user}'\
-#             AND password='{password}'"
-#     print(query)
-#     cursor.execute(query)
-#     userData = cursor.fetchall()
-#     bd.close()
-    
-#     if userData == []:
-#         return False
-#     else:
-#         return userData[0]
 
 def checkUserSecure(user, password):
     bd = connectBD()
