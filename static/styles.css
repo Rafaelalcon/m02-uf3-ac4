@@ -115,7 +115,7 @@ button.home1{
     background: linear-gradient(30deg,#daff33,#1ef7af,#e7ff33);
     background-size: 400% 400%;
     position: relative;
-    animation: cambiar 10s ease-in-out infinite;
+    animation: cambiar 7s ease-in-out infinite;
 }
 @keyframes cambiar{
     0%{background-position: 0 50%;}
